@@ -1,0 +1,70 @@
+﻿@using ConnectFour
+
+@* Injecting an instance of GameState class into Board component *@
+@inject ConnectFourGameState State
+
+@* Defining board and player colours *@
+<HeadContent>
+    <style>
+        :root {
+            --board-bg: yellow;
+            /** the color of the board **/
+            --player1: red;
+            /** Player 1's piece color **/
+            --player2: blue;
+            /** Player 2's piece color **/
+        }
+    </style>
+</HeadContent>
+
+@* Display row of clickable buttons above the board *@
+<nav>
+    @for (byte i = 0; i < 7; i++)
+    {
+        var col = i;
+        <span title="Click to play a piece" @onclick="() => PlayPiece(col)">🔽</span>
+    }
+</nav>
+
+@* Generate 42 board positions *@
+<div>
+    <div class="board">
+        @for (var i = 0; i < 42; i++)
+        {
+            <span class="container">
+                <span></span>
+            </span>
+        }
+    </div>
+    @* This assigns an empty string to the CSS class of each 
+    game piece span. An empty string for a CSS class prevents 
+    the game pieces from appearing on screen as no style is 
+    applied to them. *@
+    @for (var i = 0; i < 42; i++)
+    {
+        <span class="@pieces[i]"></span>
+    }
+</div>
+
+
+@code {
+    @* Reset the board after initialising *@
+    protected override void OnInitialized()
+    {
+        State.ResetBoard();
+    }
+    @* Array of 42 game pieces (disks) *@
+    private string[] pieces = new string[42];
+
+    @* Tells GameState to play the piece in the column and it returns
+    what row it landed in. Then defines the 3 CSS classes to assign to the game
+    piece to identify which player is acting, the column and landing row *@
+    private void PlayPiece(byte col)
+    {
+        var player = State.PlayerTurn;
+        var turn = State.CurrentTurn;
+        var landingRow = State.PlayPiece(col);
+        pieces[turn] = $"player{player} col{col} drop{landingRow}";
+    }
+
+}

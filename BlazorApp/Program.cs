@@ -1,11 +1,12 @@
 using BlazorApp.Components;
+using ConnectFour;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+builder.Services.AddSingleton<ConnectFourGameState>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
