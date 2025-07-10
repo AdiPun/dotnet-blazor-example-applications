@@ -73,6 +73,7 @@
     piece to identify which player is acting, the column and landing row *@
     private void PlayPiece(byte col)
     {
+        @* Try play a piece and catch the exception if error *@
         errorMessage = string.Empty;
         try
         {
@@ -85,6 +86,15 @@
         {
             errorMessage = ex.Message;
         }
+
+        @* Switch state check for a win and apply relevent message to winnerMessage *@
+        winnerMessage = State.CheckForWin() switch
+        {
+            ConnectFourGameState.WinState.Player1_Wins => "Player 1 Wins!",
+            ConnectFourGameState.WinState.Player2_Wins => "Player 2 Wins!",
+            ConnectFourGameState.WinState.Tie => "It's a tie!",
+            _ => ""
+        };
     }
     void ResetGame()
     {
