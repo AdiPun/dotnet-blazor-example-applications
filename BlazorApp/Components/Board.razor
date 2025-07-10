@@ -26,6 +26,14 @@
     }
 </nav>
 
+@* Markup allows displaying indicators about the current gameState *@
+<article>
+    @winnerMessage <button style="@ResetStyle" @onclick="ResetGame">Reset the game</button>
+    <br />
+    <span class="alert-danger">@errorMessage</span>
+    <span class="alert-info">@CurrentTurn</span>
+</article>
+
 @* Generate 42 board positions *@
 <div>
     <div class="board">
@@ -46,7 +54,6 @@
     }
 </div>
 
-
 @code {
     @* Reset the board after initialising *@
     protected override void OnInitialized()
@@ -55,16 +62,35 @@
     }
     @* Array of 42 game pieces (disks) *@
     private string[] pieces = new string[42];
+    private string winnerMessage = string.Empty;
+    private string errorMessage = string.Empty;
+
+    private string CurrentTurn => (winnerMessage == string.Empty) ? $"Player {State.PlayerTurn}'s Turn" : "";
+    private string ResetStyle => (winnerMessage == string.Empty) ? "display: none;" : "";
 
     @* Tells GameState to play the piece in the column and it returns
     what row it landed in. Then defines the 3 CSS classes to assign to the game
     piece to identify which player is acting, the column and landing row *@
     private void PlayPiece(byte col)
     {
-        var player = State.PlayerTurn;
-        var turn = State.CurrentTurn;
-        var landingRow = State.PlayPiece(col);
-        pieces[turn] = $"player{player} col{col} drop{landingRow}";
+        errorMessage = string.Empty;
+        try
+        {
+            var player = State.PlayerTurn;
+            var turn = State.CurrentTurn;
+            var landingRow = State.PlayPiece(col);
+            pieces[turn] = $"player{player} col{col} drop{landingRow}";
+        }
+        catch (ArgumentException ex)
+        {
+            errorMessage = ex.Message;
+        }
     }
-
+    void ResetGame()
+    {
+        State.ResetBoard();
+        winnerMessage = string.Empty;
+        errorMessage = string.Empty;
+        pieces = new string[42];
+    }
 }
