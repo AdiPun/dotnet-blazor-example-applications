@@ -1,0 +1,98 @@
+﻿@page "/formatter"
+
+<h3>UI formatter</h3>
+
+@* Add input parameters for line width and count *@
+<div>
+    <label>Max Line Width:
+        <input type="number" @bind="m_maxLineLength" min="10" max="100" />
+    </label>
+    <label>Max Line Count:
+        <input type="number" @bind="m_maxLineCount" min="10" max="100" />
+    </label>
+</div>
+
+@* Take text input from user *@
+<p>Write in the textbox below to preview it formatted with limitations</p>
+<div>
+    <textarea @bind="m_input" rows="6" cols="60"></textarea>
+</div>
+
+@* Input button to format text *@
+<button @onclick="Format">Format</button>
+
+@* Display the formatted text *@
+<div>
+    <h4>Formatted Output:</h4>
+    <pre>@m_output</pre>
+
+</div>
+
+@code {
+    @* Formats on parameter change *@
+    protected override void OnParametersSet()
+    {
+        Format();
+    }
+
+    @* Holds our input string *@
+    string m_input = "Write something here!";
+    string m_output = "";
+    int m_maxLineLength = 60;
+    int m_maxLineCount = 6;
+
+    @* Formats m_input and populates m_output *@
+    void Format()
+    {
+        m_output = FormatText(m_input);
+    }
+
+    string FormatText(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return string.Empty;
+        }
+
+        String[] words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        List<string> resultLines = new List<string>();
+        resultLines.Capacity = m_maxLineCount;
+        string currentLine = "";
+
+        foreach (string word in words)
+        {
+
+
+            @* Add the current line plus a space and the word.
+            If their length exceeds the max line length, add the currentLine to the list of strings
+            and set the currentLine to the current word.
+             *@
+            if ((currentLine + " " + word).Trim().Length > m_maxLineLength)
+            {
+                resultLines.Add(currentLine.Trim());
+                currentLine = word;
+
+                @* Breaks the loop if the max line count is reached *@
+                if (resultLines.Count >= m_maxLineCount)
+                {
+                    break;
+                }
+            }
+            @* Otherwise just keep adding the word to the currentLine *@
+            else
+            {
+                currentLine += " " + word;
+            }
+        }
+
+        @* Make sure to add the last currentLine to the resultLines if it's not whitespace or null 
+        and if the max lines hasn't been exceeded*@
+        if (!string.IsNullOrWhiteSpace(currentLine) && resultLines.Count < m_maxLineCount)
+        {
+            resultLines.Add(currentLine.Trim());
+        }
+
+        @* Join the list of strings together with a line break between the lines *@
+        return string.Join("\n", resultLines);
+    }
+}
