@@ -1,6 +1,9 @@
 # Dot Net Blazor practice applications
 An area where I practice blazor, c#, html and js by creating a series of blazor pages and applications
 
+### Textbox formatter
+![Blazor UI formatter](https://github.com/user-attachments/assets/a033d451-49d4-4466-9847-c32e32a82319)
+
 ### Connect Four
 <img width="577" height="438" alt="image" src="https://github.com/user-attachments/assets/f0b2a4b6-af4d-4d7c-a228-c3f431908baf" />
 
