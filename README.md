@@ -1,5 +1,5 @@
 # Dot Net Blazor practice applications
-I have created ASP.NET applications with Blazor and SignalR. Using Visual Studio, C# and HTML. 
+Creating ASP.NET applications with Blazor. Using Visual Studio, C# and HTML. 
 
 ### Textbox formatter
 ![Blazor UI formatter](https://github.com/user-attachments/assets/a033d451-49d4-4466-9847-c32e32a82319)
