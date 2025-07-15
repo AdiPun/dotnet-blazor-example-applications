@@ -1,5 +1,5 @@
 # Dot Net Blazor practice applications
-An area where I practice blazor, c#, html and js by creating a series of blazor pages and applications
+I have created ASP.NET applications with Blazor and SignalR. Using Visual Studio, C#, HTML and js. 
 
 ### Textbox formatter
 ![Blazor UI formatter](https://github.com/user-attachments/assets/a033d451-49d4-4466-9847-c32e32a82319)
